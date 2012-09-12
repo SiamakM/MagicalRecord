@@ -1,3 +1,15 @@
+# Fork Description
+
+This is a fork of MagicalRecord 1.8.3. The purpose is to provide a usable copy of MagicalRecord for those who seek to support iOS 4, or for those experiencing problems with MagicalRecord 2. Changes include:
+
+1. Removed iOS 5+ nested context / private queue concurrency
+2. Removed iCloud support
+3. Bug fixes
+
+MagicalRecord 1.8.3 included two internal concurrency modes, Thread Isolation (aka Thread Confinement) and Private Queue. Private Queues proved to be quite buggy, both for its internal implementation, and for using nested contexts, new and buggy in iOS 5 and OS X 10.7. [Read up for more details on nested context bugs in iOS 5](http://wbyoung.tumblr.com/post/27851725562/core-data-growing-pains). This fork does away with Private Queue concurrency.
+
+Read on below for the original Readme.
+
 # MagicalRecord for Core Data
 
 In software engineering, the active record pattern is a design pattern found in software that stores its data in relational databases. It was named by Martin Fowler in his book Patterns of Enterprise Application Architecture. The interface to such an object would include functions such as Insert, Update, and Delete, plus properties that correspond more-or-less directly to the columns in the underlying database table.
