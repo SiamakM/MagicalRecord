@@ -95,31 +95,6 @@ static NSUInteger defaultBatchSize = kMagicalRecordDefaultBatchSize;
 	return [self MR_entityDescriptionInContext:[NSManagedObjectContext MR_contextForCurrentThread]];
 }
 
-+ (NSArray *) MR_propertiesNamed:(NSArray *)properties
-{
-	NSEntityDescription *description = [self MR_entityDescription];
-	NSMutableArray *propertiesWanted = [NSMutableArray array];
-	
-	if (properties)
-	{
-		NSDictionary *propDict = [description propertiesByName];
-		
-		for (NSString *propertyName in properties)
-		{
-			NSPropertyDescription *property = [propDict objectForKey:propertyName];
-			if (property)
-			{
-				[propertiesWanted addObject:property];
-			}
-			else
-			{
-				MRLog(@"Property '%@' not found in %@ properties for %@", propertyName, [propDict count], NSStringFromClass(self));
-			}
-		}
-	}
-	return propertiesWanted;
-}
-
 + (NSArray *) MR_sortAscending:(BOOL)ascending attributes:(NSArray *)attributesToSortBy
 {
 	NSMutableArray *attributes = [NSMutableArray array];

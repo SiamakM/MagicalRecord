@@ -24,7 +24,6 @@
 + (NSFetchRequest *) MR_createFetchRequestInContext:(NSManagedObjectContext *)context;
 + (NSEntityDescription *) MR_entityDescription;
 + (NSEntityDescription *) MR_entityDescriptionInContext:(NSManagedObjectContext *)context;
-+ (NSArray *) MR_propertiesNamed:(NSArray *)properties;
 
 + (id) MR_createEntity;
 + (id) MR_createInContext:(NSManagedObjectContext *)context;
