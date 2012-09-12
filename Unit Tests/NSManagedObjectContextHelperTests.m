@@ -32,12 +32,7 @@
 {
     NSManagedObjectContext *testContext = [NSManagedObjectContext MR_contextThatNotifiesDefaultContextOnMainThread];
 
-    THREAD_ISOLATION_ENABLED(
     assertThatBool([testContext MR_notifiesMainContextOnSave], is(equalToBool(YES)));
-                             )
-    PRIVATE_QUEUES_ENABLED(
-               assertThat([testContext parentContext], is(equalTo([NSManagedObjectContext MR_defaultContext])));
-    )
 }
 
 

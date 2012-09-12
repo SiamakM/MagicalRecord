@@ -32,18 +32,6 @@
 #define kCFCoreFoundationVersionNumber_iPhoneOS_5_0 674.0
 #endif
 
-#define PRIVATE_QUEUES_ENABLED(...) \
-    if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iPhoneOS_5_0) \
-    { \
-        __VA_ARGS__ \
-    }
-
-#define THREAD_ISOLATION_ENABLED(...) \
-    if (kCFCoreFoundationVersionNumber < kCFCoreFoundationVersionNumber_iPhoneOS_5_0) \
-    { \
-        __VA_ARGS__ \
-    }
-
 #if MR_USE_ARC
 #define MR_RETAIN(xx)
 #define MR_RELEASE(xx)
