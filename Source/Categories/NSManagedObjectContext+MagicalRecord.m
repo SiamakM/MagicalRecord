@@ -11,7 +11,6 @@
 static NSManagedObjectContext *defaultManageObjectContext_ = nil;
 static NSString const * kMagicalRecordManagedObjectContextKey = @"MagicalRecord_NSManagedObjectContextForThreadKey";
 static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMagicalRecordNotifiesMainContextOnSave";
-       NSString * const kMagicalRecordDidMergeChangesFromiCloudNotification = @"kMagicalRecordDidMergeChangesFromiCloudNotification";
 
 @interface NSManagedObjectContext (MagicalRecordPrivate)
 
@@ -33,20 +32,11 @@ static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMag
 + (void) MR_setDefaultContext:(NSManagedObjectContext *)moc
 {
     NSPersistentStoreCoordinator *coordinator = [NSPersistentStoreCoordinator MR_defaultStoreCoordinator];
-    if ([MagicalRecordHelpers isICloudEnabled]) 
-    {
-        [defaultManageObjectContext_ MR_stopObservingiCloudChangesInCoordinator:coordinator];
-    }
     
     MR_RETAIN(moc);
     MR_RELEASE(defaultManageObjectContext_);
 
     defaultManageObjectContext_ = moc;
-    
-    if ([MagicalRecordHelpers isICloudEnabled]) 
-    {
-        [defaultManageObjectContext_ MR_observeiCloudChangesInCoordinator:coordinator];
-    }
 }
 
 + (void)MR_resetDefaultContext
@@ -89,38 +79,6 @@ static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMag
 }
 
 #pragma mark - Merge Helpers
-
-- (void) MR_observeiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(MR_mergeChangesFromiCloud:)
-                                                 name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
-                                               object:coordinator];
-    
-}
-
-- (void) MR_stopObservingiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSPersistentStoreDidImportUbiquitousContentChangesNotification 
-                                                  object:coordinator];
-}
-
-- (void) MR_mergeChangesFromiCloud:(NSNotification *)notification;
-{
-    [self performBlock:^{
-        
-        MRLog(@"Merging changes From iCloud %@context%@", 
-              self == [NSManagedObjectContext MR_defaultContext] ? @"*** DEFAULT *** " : @"",
-              ([NSThread isMainThread] ? @" *** on Main Thread ***" : @""));
-
-        [self mergeChangesFromContextDidSaveNotification:notification];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMagicalRecordDidMergeChangesFromiCloudNotification
-                                                            object:self
-                                                          userInfo:[notification userInfo]];
-    }];
-}
 
 - (void) MR_mergeChangesFromNotification:(NSNotification *)notification;
 {

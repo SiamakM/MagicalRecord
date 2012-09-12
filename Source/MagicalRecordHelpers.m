@@ -179,37 +179,6 @@ void replaceSelectorForTargetWithSourceImpAndSwizzle(Class originalClass, SEL or
 	[NSManagedObjectContext MR_setDefaultContext:context];
 }
 
-#pragma mark - iCloud Methods
-
-+ (BOOL) isICloudEnabled;
-{
-    NSURL *cloudURL = [NSPersistentStore MR_cloudURLForUbiqutiousContainer:nil];
-    return cloudURL != nil;
-}
-
-+ (void) setupCoreDataStackWithiCloudContainer:(NSString *)icloudBucket localStoreNamed:(NSString *)localStore;
-{
-    [self setupCoreDataStackWithiCloudContainer:icloudBucket contentNameKey:nil localStoreNamed:localStore cloudStorePathComponent:nil];
-}
-
-+ (void) setupCoreDataStackWithiCloudContainer:(NSString *)containerID contentNameKey:(NSString *)contentNameKey localStoreNamed:(NSString *)localStoreName cloudStorePathComponent:(NSString *)pathSubcomponent;
-{
-    [self setupCoreDataStackWithiCloudContainer:containerID contentNameKey:contentNameKey localStoreNamed:localStoreName cloudStorePathComponent:pathSubcomponent completion:nil];
-}
-
-+ (void) setupCoreDataStackWithiCloudContainer:(NSString *)containerID contentNameKey:(NSString *)contentNameKey localStoreNamed:(NSString *)localStoreName cloudStorePathComponent:(NSString *)pathSubcomponent completion:(void(^)(void))completion;
-{
-    NSPersistentStoreCoordinator *coordinator = [NSPersistentStoreCoordinator MR_coordinatorWithiCloudContainerID:containerID
-                                                                                                   contentNameKey:contentNameKey 
-                                                                                                  localStoreNamed:localStoreName 
-                                                                                          cloudStorePathComponent:pathSubcomponent
-                                                                                                       completion:completion];
-    [NSPersistentStoreCoordinator MR_setDefaultStoreCoordinator:coordinator];
-    
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_contextWithStoreCoordinator:coordinator];
-    [NSManagedObjectContext MR_setDefaultContext:context];
-}
-
 #pragma mark - Options
 
 + (BOOL) shouldAutoCreateManagedObjectModel;
