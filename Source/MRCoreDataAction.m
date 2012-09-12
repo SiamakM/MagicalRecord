@@ -58,8 +58,7 @@ void cleanup_save_queue()
         localContext = [NSManagedObjectContext MR_contextThatNotifiesDefaultContextOnMainThread];
 #endif
         
-        [mainContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
-        [localContext setMergePolicy:NSOverwriteMergePolicy];
+        [localContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     }
     
     block(localContext);
@@ -70,7 +69,6 @@ void cleanup_save_queue()
     }
     
     localContext.MR_notifiesMainContextOnSave = NO;
-    [mainContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 }
 
 + (void) saveDataWithBlock:(void(^)(NSManagedObjectContext *localContext))block

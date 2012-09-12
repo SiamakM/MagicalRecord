@@ -228,6 +228,7 @@ static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMag
         MRLog(@"Creating context in Thread Isolation Mode");
         context = [[NSManagedObjectContext alloc] init];
         [context setPersistentStoreCoordinator:coordinator];
+        [context setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
         MR_AUTORELEASE(context);
     }
     return context;
