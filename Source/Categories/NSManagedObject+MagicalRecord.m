@@ -571,43 +571,6 @@ static NSUInteger defaultBatchSize = kMagicalRecordDefaultBatchSize;
 							  inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
 }
 
-+ (id) MR_findFirstWithPredicate:(NSPredicate *)searchTerm andRetrieveAttributes:(NSArray *)attributes inContext:(NSManagedObjectContext *)context
-{
-	NSFetchRequest *request = [self MR_createFetchRequestInContext:context];
-	[request setPredicate:searchTerm];
-	[request setPropertiesToFetch:attributes];
-	
-	return [self MR_executeFetchRequestAndReturnFirstObject:request inContext:context];
-}
-
-+ (id) MR_findFirstWithPredicate:(NSPredicate *)searchTerm andRetrieveAttributes:(NSArray *)attributes
-{
-	return [self MR_findFirstWithPredicate:searchTerm
-				  andRetrieveAttributes:attributes 
-							  inContext:[NSManagedObjectContext MR_contextForCurrentThread]];
-}
-
-
-+ (id) MR_findFirstWithPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortBy ascending:(BOOL)ascending inContext:(NSManagedObjectContext *)context andRetrieveAttributes:(id)attributes, ...
-{
-	NSFetchRequest *request = [self MR_requestAllSortedBy:sortBy
-											 ascending:ascending
-										 withPredicate:searchTerm
-											 inContext:context];
-	[request setPropertiesToFetch:[self MR_propertiesNamed:attributes]];
-	
-	return [self MR_executeFetchRequestAndReturnFirstObject:request inContext:context];
-}
-
-+ (id) MR_findFirstWithPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortBy ascending:(BOOL)ascending andRetrieveAttributes:(id)attributes, ...
-{
-	return [self MR_findFirstWithPredicate:searchTerm
-							   sortedBy:sortBy 
-							  ascending:ascending 
-								inContext:[NSManagedObjectContext MR_contextForCurrentThread]
-				  andRetrieveAttributes:attributes];
-}
-
 + (NSArray *) MR_findByAttribute:(NSString *)attribute withValue:(id)searchValue inContext:(NSManagedObjectContext *)context
 {
 	NSFetchRequest *request = [self MR_createFetchRequestInContext:context];
