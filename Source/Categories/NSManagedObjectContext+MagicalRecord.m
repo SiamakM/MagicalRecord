@@ -31,11 +31,8 @@ static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMag
 
 + (void) MR_setDefaultContext:(NSManagedObjectContext *)moc
 {
-    NSPersistentStoreCoordinator *coordinator = [NSPersistentStoreCoordinator MR_defaultStoreCoordinator];
-    
     MR_RETAIN(moc);
     MR_RELEASE(defaultManageObjectContext_);
-
     defaultManageObjectContext_ = moc;
 }
 

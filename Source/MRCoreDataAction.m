@@ -47,7 +47,6 @@ void cleanup_save_queue()
 {
     NSManagedObjectContext *mainContext  = [NSManagedObjectContext MR_defaultContext];
     NSManagedObjectContext *localContext = mainContext;
-    NSPersistentStoreCoordinator *defaultCoordinator = [NSPersistentStoreCoordinator MR_defaultStoreCoordinator];
     if (![NSThread isMainThread]) 
     {
         
@@ -115,21 +114,6 @@ void cleanup_save_queue()
     {
         block(context);
     }
-}
-
-+ (void) saveDataWithOptions:(MRCoreDataSaveOption)options withBlock:(void(^)(NSManagedObjectContext *localContext))block;
-{
-    [self saveDataWithOptions:options withBlock:block completion:NULL];
-}
-
-+ (void) saveDataWithOptions:(MRCoreDataSaveOption)options withBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(void(^)(void))callback;
-{
-    //TODO: add implementation    
-}
-
-+ (void) saveDataWithOptions:(MRCoreDataSaveOption)options withBlock:(void (^)(NSManagedObjectContext *))block completion:(void (^)(void))callback errorHandler:(void(^)(NSError *))errorCallback
-{
-    
 }
 
 #endif

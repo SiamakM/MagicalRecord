@@ -9,17 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "NSManagedObjectContext+MagicalRecord.h"
 
-typedef enum
-{
-    MRCoreDataSaveOptionInBackground        = 1 << 0,
-    MRCoreDataSaveOptionWithNewContext      = 1 << 1
-} MRCoreDataSaveOption;
-
-typedef enum
-{
-    MRCoreDataLookupOptionWithNewContext    = 1 << 0
-} MRCoreDataLookupOption;
-
 @interface MRCoreDataAction : NSObject
 
 + (void) cleanUp;
@@ -30,9 +19,6 @@ typedef enum
 
 + (void) saveDataInBackgroundWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
 + (void) saveDataInBackgroundWithBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(void(^)(void))callback;
-
-+ (void) saveDataWithOptions:(MRCoreDataSaveOption)options withBlock:(void(^)(NSManagedObjectContext *localContext))block;
-+ (void) saveDataWithOptions:(MRCoreDataSaveOption)options withBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(void(^)(void))callback;
 
 + (void) lookupWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
 
