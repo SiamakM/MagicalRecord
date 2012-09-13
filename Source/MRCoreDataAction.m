@@ -45,22 +45,14 @@ void cleanup_save_queue()
 
 + (void) saveDataWithBlock:(void (^)(NSManagedObjectContext *localContext))block errorHandler:(void (^)(NSError *))errorHandler
 {
-    NSManagedObjectContext *mainContext  = [NSManagedObjectContext MR_defaultContext];
-    NSManagedObjectContext *localContext = mainContext;
-    if (![NSThread isMainThread]) 
-    {
-        localContext = [NSManagedObjectContext MR_contextThatNotifiesDefaultContextOnMainThread];
-        [localContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-    }
-    
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+
     block(localContext);
     
     if ([localContext hasChanges]) 
     {
         [localContext MR_saveWithErrorHandler:errorHandler];
     }
-    
-    localContext.MR_notifiesMainContextOnSave = NO;
 }
 
 + (void) saveDataWithBlock:(void(^)(NSManagedObjectContext *localContext))block
