@@ -45,7 +45,18 @@ void cleanup_save_queue()
 
 + (void) saveDataWithBlock:(void (^)(NSManagedObjectContext *localContext))block errorHandler:(void (^)(NSError *))errorHandler
 {
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSManagedObjectContext *mainContext  = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *localContext = mainContext;
+    if (![NSThread isMainThread])
+    {
+	// IMPORTANT: Never use MR_contextForCurrentThread on threads
+	// that aren't certain to not be a GCD thread. Bad things will
+	// happen. The fundamental problem is that one should never
+	// attempt to reuse contexts by storing them in a thread's
+	// dictionary, if that thread belongs to GCD.
+        localContext = [NSManagedObjectContext MR_contextThatNotifiesDefaultContextOnMainThread];
+        [localContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+    }
 
     block(localContext);
     
@@ -53,6 +64,8 @@ void cleanup_save_queue()
     {
         [localContext MR_saveWithErrorHandler:errorHandler];
     }
+
+    localContext.MR_notifiesMainContextOnSave = NO;
 }
 
 + (void) saveDataWithBlock:(void(^)(NSManagedObjectContext *localContext))block
