@@ -95,7 +95,7 @@ static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMag
 	}
 	else
 	{
-		[self performSelectorOnMainThread:@selector(MR_mergeChangesFromNotification:) withObject:notification waitUntilDone:YES];
+		[self performSelectorOnMainThread:@selector(MR_mergeChangesFromNotification:) withObject:notification waitUntilDone:NO];
 	}
 }
 
