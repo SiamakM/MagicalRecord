@@ -82,14 +82,7 @@ void cleanup_save_queue()
 
 + (void) saveDataInBackgroundWithBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(void(^)(void))callback
 {
-    dispatch_async(background_save_queue(), ^{
-        [self saveDataWithBlock:block];
-        
-        if (callback) 
-        {
-            dispatch_async(dispatch_get_main_queue(), callback);
-        }
-    });
+    [self saveDataInBackgroundWithBlock:block completion:callback errorHandler:nil];
 }
 
 + (void) saveDataInBackgroundWithBlock:(void (^)(NSManagedObjectContext *localContext))block completion:(void (^)(void))callback errorHandler:(void (^)(NSError *))errorHandler
@@ -99,7 +92,12 @@ void cleanup_save_queue()
         
         if (callback)
         {
-            dispatch_async(dispatch_get_main_queue(), callback);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([NSManagedObjectContext MR_defaultContext] != nil)
+                {
+                    callback();
+                }
+            });
         }
     });
 }
