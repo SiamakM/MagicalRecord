@@ -31,6 +31,7 @@ static void const * kMagicalRecordNotifiesMainContextAssociatedValueKey = @"kMag
 
 + (void) MR_setDefaultContext:(NSManagedObjectContext *)moc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:defaultManageObjectContext_];
     MR_RETAIN(moc);
     MR_RELEASE(defaultManageObjectContext_);
     defaultManageObjectContext_ = moc;
