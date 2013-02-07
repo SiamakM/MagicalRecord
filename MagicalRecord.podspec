@@ -10,5 +10,9 @@ Pod::Spec.new do |s|
   s.source_files = 'Source/**/*.{h,m}'
   s.framework    = 'CoreData'
 
-  s.prefix_header_contents = '#import "CoreData+MagicalRecord.h"'
+  s.prefix_header_contents = <<-END
+#ifdef __OBJC__
+#import "CoreData+MagicalRecord.h"
+#endif
+  END
 end
